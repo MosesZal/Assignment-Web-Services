@@ -1,0 +1,62 @@
+CREATE DATABASE IF NOT EXISTS blogheaven;
+USE	blogheaven;
+
+DROP TABLE IF EXISTS blog_post;
+DROP TABLE IF EXISTS user;
+DROP TABLE IF EXISTS address;
+
+CREATE TABLE address (
+    address_id INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+    country VARCHAR(25) NOT NULL,
+    city VARCHAR(40) NOT NULL,
+    street VARCHAR(40) NOT NULL,
+    postal_code VARCHAR(40) NOT NULL
+);
+
+CREATE TABLE user (
+    user_id INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+    username VARCHAR(50) NOT NULL UNIQUE,
+    first_name VARCHAR(25) NOT NULL,
+    last_name VARCHAR(25) NOT NULL,
+    address_id INT,
+    FOREIGN KEY (address_id)
+        REFERENCES address (address_id),
+    email VARCHAR(100) NOT NULL UNIQUE,
+    phone_number VARCHAR(50) NOT NULL UNIQUE,
+    member_type VARCHAR(10) NOT NULL
+);
+
+CREATE TABLE blog_post (
+    post_id INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+    user_id INT,
+    FOREIGN KEY (user_id)
+        REFERENCES user (user_id),
+    date_time DATETIME,
+    title VARCHAR(300) NOT NULL,
+    content VARCHAR(5000) NOT NULL
+);
+
+INSERT INTO address (country, city, street, postal_code)
+VALUES
+('Sweden', 'Karlskoga', 'Mineralvägen 8', '691 45'),
+('USA', 'Dearborn', 'Amazon Avenue', '48120-1000'),
+('Turkey', 'İslamlar', 'İstiklal Caddesi', '01960')
+;
+
+INSERT INTO user (username, first_name, last_name, address_id, email, phone_number, member_type)
+VALUES
+('MosesZal', 'Moussa', 'Zalzala', 3, 'moses.zal@edugrade.com', '90 212 554 4787', 'premium'),
+('Charby', 'Chad', 'Darby', 2, 'chad@luv2code.com', '1 (313) 594-1112', 'premium'),
+('Johnson', 'John', 'Thompson', 2, 'tom.john@hotmail.com', '1 (223) 547-9870', 'standard'),
+('Tom_Jerry', 'Tomas', 'Wigell', 1, 'cats_are_my_life@cats.cat4life', '46 07 34654312', 'enhanced'),
+('marcusFri', 'Marcus', 'Friberg', 1, 'marc_fri_berg@gmail.com', '46 07 12233697', 'enhanced')
+;
+
+INSERT INTO blog_post (user_id, date_time, title, content)
+VALUES
+(1, CURRENT_TIMESTAMP(), 'Looking For A LIA Destination Within Java Development', 'Hey guys. Anyone knows about companies that are interested in having students for LIA in Örebro county and Kristinehamn in Sweden?'),
+(1, CURRENT_TIMESTAMP(), 'Are There Any Upcoming GPT Updates?', 'Hey guys. As we all know, GPT\'s knowledge is limited to September 2021. Does anyone have information about when it will be updated in that aspect?'),
+(2, CURRENT_TIMESTAMP(), 'Announcement About My Course', 'Hello. I just wanna let you all know that my Spring Boot course have been updated with new content! Check it out!'),
+(3, CURRENT_TIMESTAMP(), 'Just For Fun', 'You guys know that there is an actual website called guthib.com. Check it out and you will be surprised :D'),
+(4, CURRENT_TIMESTAMP(), 'Need A New Cat Name', 'Hey, I just got a new kitten and I am looking for name suggestions. Any ideas?')
+;
